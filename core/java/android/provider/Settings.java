@@ -2969,6 +2969,13 @@ public final class Settings {
         public static final String ANIMATION_CONTROLS_NO_OVERRIDE = "animation_controls_no_override";
 
         /**
+         * Whether or not to use a center clock in phone status bar
+         *
+         * @hide
+         */
+        public static final String STATUS_BAR_CENTER_CLOCK = "status_bar_center_clock";
+
+        /**
          * whether which Ram Usage Bar mode is used on recent switcher
          * 0 = none, 1 = only app use, 2 = app and cache use, 3 = app, cache and system use
          * @hide

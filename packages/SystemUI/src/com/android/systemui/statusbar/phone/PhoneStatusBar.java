@@ -180,6 +180,8 @@ public class PhoneStatusBar extends BaseStatusBar {
     //private AppSidebar mAppSidebar;
     //private int mSidebarPosition;
 
+    private boolean mUseCenterClock = false;
+
     // These are no longer handled by the policy, because we need custom strategies for them
     BluetoothController mBluetoothController;
     BatteryController mBatteryController;
@@ -205,7 +207,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     Object mQueueLock = new Object();
 
     // viewgroup containing the normal contents of the statusbar
-    LinearLayout mStatusBarContents;
+    ViewGroup mStatusBarContents;
 
     // right-hand icons
     LinearLayout mSystemIconArea;
@@ -372,6 +374,8 @@ public class PhoneStatusBar extends BaseStatusBar {
                     Settings.System.SCREEN_BRIGHTNESS_MODE), false, this);
 	    resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.APP_SIDEBAR_POSITION), false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_CENTER_CLOCK), false, this);
             update();
         }
 
@@ -393,6 +397,13 @@ public class PhoneStatusBar extends BaseStatusBar {
             if (sidebarPosition != mSidebarPosition) {
                 mSidebarPosition = sidebarPosition;
                 mWindowManager.updateViewLayout(mAppSidebar, getAppSidebarLayoutParams(sidebarPosition));
+            }
+
+            boolean useCenterClock = Settings.System.getInt(
+                    resolver, Settings.System.STATUS_BAR_CENTER_CLOCK, 0) == 1;
+            if (mUseCenterClock != useCenterClock) {
+                mUseCenterClock = useCenterClock;
+                recreateStatusBar();
             }
         }
     }
@@ -507,10 +518,12 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         if (MSimTelephonyManager.getDefault().isMultiSimEnabled()) {
             mStatusBarWindow = (StatusBarWindowView) View.inflate(context,
-                    R.layout.msim_super_status_bar, null);
+                    mUseCenterClock ? R.layout.msim_super_status_bar_center_clock : R.layout.msim_super_status_bar,
+                    null);
         } else {
             mStatusBarWindow = (StatusBarWindowView) View.inflate(context,
-                    R.layout.super_status_bar, null);
+                    mUseCenterClock ? R.layout.super_status_bar_center_clock : R.layout.super_status_bar,
+                    null);
         }
         mStatusBarWindow.mService = this;
         mStatusBarWindow.setOnTouchListener(new View.OnTouchListener() {
@@ -599,7 +612,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         mNotificationIcons = (IconMerger)mStatusBarView.findViewById(R.id.notificationIcons);
         mMoreIcon = mStatusBarView.findViewById(R.id.moreIcon);
         mNotificationIcons.setOverflowIndicator(mMoreIcon);
-        mStatusBarContents = (LinearLayout)mStatusBarView.findViewById(R.id.status_bar_contents);
+        mStatusBarContents = (ViewGroup)mStatusBarView.findViewById(R.id.status_bar_contents);
         mTickerView = mStatusBarView.findViewById(R.id.ticker);
 
         mPile = (NotificationRowLayout)mStatusBarWindow.findViewById(R.id.latestItems);

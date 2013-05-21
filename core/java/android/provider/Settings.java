@@ -3968,6 +3968,11 @@ public final class Settings {
         public static final String STATUS_BAR_ALPHA_CONFIG = "status_bar_alpha_config";
 
         /**
+         * @hide
+         */
+        public static final String LOCKSCREEN_ALPHA_CONFIG = "lockscreen_alpha_config";
+
+        /**
          * MediaScanner behavior on boot.
          * 0 = enabled
          * 1 = ask (notification)

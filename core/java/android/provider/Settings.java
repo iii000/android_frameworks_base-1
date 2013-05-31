@@ -2924,7 +2924,14 @@ public final class Settings {
          * Whether Status bar can be shown by swiping down in fullscreen apps
          * @hide
          */
+
         public static final String FULLSCREEN_STATUSBAR = "fullscreen_statusbar";
+
+        /**
+         * Timeout of fullscreen Status bar
+         * @hide
+         */
+        public static final String FULLSCREEN_STATUSBAR_TIMEOUT = "fullscreen_statusbar_timeout";
 
         /**
          * Whether to use a separate delay for "slide to unlock" and security

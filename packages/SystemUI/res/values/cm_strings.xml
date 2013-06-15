@@ -137,6 +137,9 @@
     <!-- Content description of the halo button in the notification panel for accessibility (not shown on the screen). [CHAR LIMIT=NONE] -->
     <string name="accessibility_halo">Create notification halo.</string>
 
+    <!-- Title shown in recents popup for showing app in floating mode -->
+    <string name="status_bar_recent_floating_item_title">Floating mode</string>
+
     <!-- HALO -->
     <string name="halo_dismiss">Dismiss notification</string>
     <string name="halo_hide">Hide</string>

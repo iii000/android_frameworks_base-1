@@ -2102,4 +2102,6 @@
   <java-symbol type="string" name="perf_profile_bal" />
   <java-symbol type="string" name="perf_profile_perf" />
 
+  <!-- Screenshort Trash -->
+  <java-symbol type="string" name="trash" />
 </resources>

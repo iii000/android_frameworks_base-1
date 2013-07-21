@@ -352,12 +352,16 @@ public class Halo extends FrameLayout implements Ticker.TickerCallback {
                                     public void run() {
                                         tick(mLastNotificationEntry, mContext.getResources().getString(R.string.halo_tutorial3), 0, 3000, true);
                                         mHandler.postDelayed(new Runnable() {
+	                                    public void run() {
+	                                        tick(mLastNotificationEntry, mContext.getResources().getString(R.string.halo_tutorial4), 0, 3000, true);
+                                        mHandler.postDelayed(new Runnable() {
                                             public void run() {
                                                 mState = State.IDLE;                                        
                                                 mEffect.nap(0);
                                                 mEffect.setHaloOverlay(HaloProperties.Overlay.NONE, 0f);
                                                 if (mHideTicker) mEffect.sleep(HaloEffect.SNAP_TIME + HaloEffect.NAP_TIME
                                                         + 2500, HaloEffect.SLEEP_TIME, false);                                        
+                                           	 }}, 6000);
                                             }}, 6000);
                                     }}, 6000);
                             }}, 6000);

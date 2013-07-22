@@ -532,7 +532,7 @@
     <string name="halo_silence">Hide and silence until woken</string>
     <string name="halo_tutorial1">I am HALO</string>
     <string name="halo_tutorial2">Double-tap-drag to move me around</string>
-    <string name="halo_tutorial3">Drag to switch tasks</string>
+    <string name="halo_tutorial3">Drag me to switch tasks</string>
     <string name="halo_tutorial4">Change my behavior in the settings</string>
 
 </resources>

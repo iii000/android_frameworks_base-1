@@ -26,6 +26,7 @@ import com.android.internal.widget.SizeAdaptiveLayout;
 import com.android.systemui.R;
 import com.android.systemui.SearchPanelView;
 import com.android.systemui.SystemUI;
+import com.android.systemui.TransparencyManager;
 import com.android.systemui.recent.RecentTasksLoader;
 import com.android.systemui.recent.RecentsActivity;
 import com.android.systemui.recent.TaskDescription;
@@ -206,6 +207,7 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     protected Display mDisplay;
 
+    public TransparencyManager mTransparencyManager;
 
     private boolean mDeviceProvisioned = false;
     private int mAutoCollapseBehaviour;
@@ -344,6 +346,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         mHaloActive = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.HALO_ACTIVE, 0) == 1;
 
+        mTransparencyManager = new TransparencyManager(mContext);
         createAndAddWindows();
 
         disable(switches[0]);

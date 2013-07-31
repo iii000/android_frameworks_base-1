@@ -1043,8 +1043,6 @@ public class PhoneStatusBar extends BaseStatusBar {
         prepareNavigationBarView();
 
         mWindowManager.addView(mNavigationBarView, getNavigationBarLayoutParams());
-
-        mTransparencyManager.update();
     }
 
     private void repositionNavigationBar() {

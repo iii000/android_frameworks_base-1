@@ -24,7 +24,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.android.systemui.statusbar.BaseStatusBar.NotificationClicker;
-import com.android.internal.statusbar.StatusBarNotification;
 import com.android.systemui.R;
 
 import java.util.Comparator;
@@ -121,6 +120,10 @@ public class NotificationData {
         }
     };
 
+    public void clear() {
+        mEntries.clear();
+    }
+
     public int size() {
         return mEntries.size();
     }
@@ -169,10 +172,6 @@ public class NotificationData {
             mEntries.remove(e);
         }
         return e;
-    }
-
-    public void clear() {
-        mEntries.clear();
     }
 
     /**

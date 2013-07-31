@@ -81,11 +81,15 @@ import com.android.internal.util.cm.QuietHoursUtils;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlSerializer;
+
+import com.android.internal.util.FastXmlSerializer;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
@@ -439,7 +443,7 @@ public class NotificationManagerService extends INotificationManager.Stub
             if (mPolicyFile == null) {
                 mPolicyFile = new AtomicFile(new File("/data/system", "notification_policy.xml"));
                 mBlockedPackages.clear();
-                readPolicy(mPolicyFile, TAG_BLOCKED_PKGS, mBlockedPackages);
+                readPolicy(mPolicyFile, TAG_BLOCKED_PKGS, mBlockedPackages, null, 0);
             }
         }
     }
@@ -450,7 +454,7 @@ public class NotificationManagerService extends INotificationManager.Stub
             mHaloBlacklist.clear();
             mHaloPolicyisBlack = readPolicy(mHaloPolicyFile, TAG_BLOCKED_PKGS, mHaloBlacklist, ATTR_HALO_POLICY_IS_BLACK, 1) == 1;
             mHaloWhitelist.clear();
-            readPolicy(mHaloPolicyFile, TAG_ALLOWED_PKGS, mHaloWhitelist);
+            readPolicy(mHaloPolicyFile, TAG_ALLOWED_PKGS, mHaloWhitelist, null, 0);
         }
     }
 
@@ -1028,6 +1032,7 @@ public class NotificationManagerService extends INotificationManager.Stub
     {
         final StatusBarNotification sbn;
         IBinder statusBarKey;
+        public String pkg;
 
         NotificationRecord(StatusBarNotification sbn)
         {
@@ -1479,6 +1484,9 @@ public class NotificationManagerService extends INotificationManager.Stub
         mToastQueue = new ArrayList<ToastRecord>();
         mHandler = new WorkerHandler();
 
+        loadBlockDb();
+        loadHaloBlockDb();
+
         mAppOps = (AppOpsManager)context.getSystemService(Context.APP_OPS_SERVICE);
 
         importOldBlockDb();
@@ -1563,7 +1571,6 @@ public class NotificationManagerService extends INotificationManager.Stub
      */
     private void importOldBlockDb() {
         loadBlockDb();
-        loadHaloBlockDb();
 
         PackageManager pm = mContext.getPackageManager();
         for (String pkg : mBlockedPackages) {

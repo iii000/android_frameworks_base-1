@@ -3699,14 +3699,14 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     } else {
                         df.left = of.left = cf.left = mRestrictedScreenLeft;
                         df.top = of.top = cf.top = mRestrictedScreenTop;
-                        df.right = of.right = cf.right = mContentRight;
-                        df.bottom = of.bottom = cf.bottom = mContentBottom;
+                        df.right = of.right = cf.right = mRestrictedScreenLeft+mRestrictedScreenWidth;
+                        df.bottom = of.bottom = cf.bottom = mRestrictedScreenTop+mRestrictedScreenHeight;
                     }
                     if (adjust != SOFT_INPUT_ADJUST_NOTHING) {
-                        vf.left = mRestrictedScreenLeft;
-                        vf.top =  mRestrictedScreenTop;
-                        vf.right = mRestrictedScreenLeft+mRestrictedScreenWidth;
-                        vf.bottom = mRestrictedScreenTop+mRestrictedScreenHeight;;
+                        vf.left = mCurLeft;
+                        vf.top = mCurTop;
+                        vf.right = mCurRight;
+                        vf.bottom = mCurBottom;
                     } else {
                         vf.set(cf);
                     }

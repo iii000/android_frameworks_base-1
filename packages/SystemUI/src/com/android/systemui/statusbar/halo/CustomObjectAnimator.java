@@ -68,7 +68,7 @@ public class CustomObjectAnimator {
         } else {
             animator.addUpdateListener(update);
         }
-        
+
         animator.setInterpolator(interpolator);
 
         if (executeAfter != null) {
@@ -83,7 +83,7 @@ public class CustomObjectAnimator {
                     if (!canceled) executeAfter.run();
                 }});
         }
-        
+
         animator.start();
     }
 

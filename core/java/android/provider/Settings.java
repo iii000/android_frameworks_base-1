@@ -2921,6 +2921,12 @@ public final class Settings {
         public static final String EXPANDED_DESKTOP_STYLE = "expanded_desktop_style";
 
         /**
+         * Whether Status bar can be shown by swiping down in fullscreen apps
+         * @hide
+         */
+        public static final String FULLSCREEN_STATUSBAR = "fullscreen_statusbar";
+
+        /**
          * Whether to use a separate delay for "slide to unlock" and security
          * lock
          * @hide

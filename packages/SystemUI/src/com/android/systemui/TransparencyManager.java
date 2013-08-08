@@ -18,6 +18,7 @@ import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.phone.PanelBar;
 
 import java.util.List;
@@ -28,8 +29,10 @@ public class TransparencyManager {
 
     private static final String TAG = TransparencyManager.class.getSimpleName();
 
+    NavigationBarView mNavbar;
     PanelBar mStatusbar;
 
+    SomeInfo mNavbarInfo = new SomeInfo();
     SomeInfo mStatusbarInfo = new SomeInfo();
 
     final Context mContext;
@@ -74,6 +77,9 @@ public class TransparencyManager {
         mHandler.postDelayed(updateTransparencyRunnable, 100);
     }
 
+    public void setNavbar(NavigationBarView n) {
+        mNavbar = n;
+    }
 
     public void setStatusbar(PanelBar s) {
         mStatusbar = s;
@@ -81,6 +87,10 @@ public class TransparencyManager {
 
     public void setTempDisableStatusbarState(boolean state) {
         mStatusbarInfo.tempDisable = state;
+    }
+
+    public void setTempNavbarState(boolean state) {
+        mNavbarInfo.tempDisable = state;
     }
 
     private void doTransparentUpdate() {
@@ -95,6 +105,18 @@ public class TransparencyManager {
             @Override
             protected void onPostExecute(Void v) {
                 // TODO animate alpha~
+                if (mNavbar != null) {
+                    if (mNavbarInfo.tempDisable) {
+                        mNavbar.setBackgroundAlpha(1);
+                        mNavbarInfo.tempDisable = false;
+                    } else if (mIsKeyguardShowing) {
+                        mNavbar.setBackgroundAlpha(mNavbarInfo.keyguardAlpha);
+                    } else if (mIsHomeShowing) {
+                        mNavbar.setBackgroundAlpha(mNavbarInfo.homeAlpha);
+                    } else {
+                        mNavbar.setBackgroundAlpha(1);
+                    }
+                }
                 if (mStatusbar != null) {
                     if (mStatusbarInfo.tempDisable) {
                         mStatusbar.setBackgroundAlpha(1);
@@ -159,6 +181,9 @@ public class TransparencyManager {
             ContentResolver resolver = mContext.getContentResolver();
 
             resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_ALPHA_CONFIG), false,
+                    this);
+            resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.STATUS_BAR_ALPHA_CONFIG), false,
                     this);
             updateSettings();
@@ -174,10 +199,23 @@ public class TransparencyManager {
         ContentResolver resolver = mContext.getContentResolver();
 
         final float defaultAlpha = new Float(mContext.getResources().getInteger(
-                R.integer.status_bar_transparency) / 255);
-
+                R.integer.navigation_bar_transparency) / 255);
         String alphas[];
         String settingValue = Settings.System.getString(resolver,
+                Settings.System.NAVIGATION_BAR_ALPHA_CONFIG);
+        Log.e(TAG, "nav bar config: " + settingValue);
+        if (settingValue == null) {
+            mNavbarInfo.homeAlpha = defaultAlpha;
+            mNavbarInfo.keyguardAlpha = defaultAlpha;
+        } else {
+            alphas = settingValue.split(";");
+            if (alphas != null && alphas.length == 2) {
+                mNavbarInfo.homeAlpha = Float.parseFloat(alphas[0]) / 255;
+                mNavbarInfo.keyguardAlpha = Float.parseFloat(alphas[1]) / 255;
+            }
+        }
+
+        settingValue = Settings.System.getString(resolver,
                 Settings.System.STATUS_BAR_ALPHA_CONFIG);
         Log.e(TAG, "status bar config: " + settingValue);
         if (settingValue == null) {

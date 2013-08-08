@@ -3734,6 +3734,11 @@ public final class Settings {
         /**
          * @hide
          */
+        public static final String NAVIGATION_BAR_ALPHA_CONFIG = "navigation_bar_alpha_config";
+
+        /**
+         * @hide
+         */
         public static final String STATUS_BAR_ALPHA_CONFIG = "status_bar_alpha_config";
     }
 

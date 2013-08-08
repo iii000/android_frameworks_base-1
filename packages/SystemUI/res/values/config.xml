@@ -108,5 +108,8 @@
 
     <!-- default Status Bar transparency. 0-255 -->
     <integer name="status_bar_transparency">255</integer>
+
+    <!-- default Navigation Bar transparency. 0-255 -->
+    <integer name="navigation_bar_transparency">255</integer>
 </resources>
 

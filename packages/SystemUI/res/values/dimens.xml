@@ -300,4 +300,7 @@
     <!-- AM/PM size in active display -->
     <dimen name="ad_ampm_font_size">32dp</dimen>
 
+    <!-- Battery bar height -->
+    <dimen name="battery_bar_height">2dp</dimen>
+
 </resources>

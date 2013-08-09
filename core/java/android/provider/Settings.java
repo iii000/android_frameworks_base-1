@@ -3740,6 +3740,15 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_ALPHA_CONFIG = "status_bar_alpha_config";
+
+        /**
+         * MediaScanner behavior on boot.
+         * 0 = enabled
+         * 1 = ask (notification)
+         * 2 = disabled
+         * @hide
+         */
+        public static final String MEDIA_SCANNER_ON_BOOT = "media_scanner_on_boot";
     }
 
     /**

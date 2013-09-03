@@ -51,7 +51,7 @@ import com.android.internal.util.pie.PiePosition;
 import com.android.systemui.EventLogTags;
 
 import com.android.systemui.R;
-import com.android.systemui.statusbar.BackgroundAlphaColorDrawable;
+import com.android.internal.util.cm.BackgroundAlphaColorDrawable;
 
 public class PhoneStatusBarView extends PanelBar {
     private static final String TAG = "PhoneStatusBarView";

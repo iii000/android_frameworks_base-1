@@ -260,13 +260,13 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     }
 
     public void updateSettings() {
-        if(mTransparencyManager != null) {
-            mTransparencyManager.update();
-        }
         mEditBar.updateKeys();
         removeButtonListeners();
         updateButtonListeners();
         setDisabledFlags(mDisabledFlags, true /* force */);
+        if(mTransparencyManager != null) {
+            mTransparencyManager.update();
+        }
     }
 
     @Override
@@ -568,7 +568,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         Drawable bg = getBackground();
         if(bg == null) return;
 
-        int a = (int) (alpha * 255);
+        int a = Math.round(alpha * 255);
         bg.setAlpha(a);
     }
 

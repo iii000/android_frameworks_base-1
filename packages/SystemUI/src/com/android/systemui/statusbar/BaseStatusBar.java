@@ -405,6 +405,25 @@ public abstract class BaseStatusBar extends SystemUI implements
             addNavigationBarCallback(mPieController);
         }
 
+        mCurrentUserId = ActivityManager.getCurrentUser();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_USER_SWITCHED);
+        mContext.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (Intent.ACTION_USER_SWITCHED.equals(action)) {
+                    mCurrentUserId = intent.getIntExtra(Intent.EXTRA_USER_HANDLE, -1);
+                    if (true) Slog.v(TAG, "userId " + mCurrentUserId + " is in the house");
+                    userSwitched(mCurrentUserId);
+                    if (mPieController != null) {
+                        mPieController.userSwitched(mCurrentUserId);
+                    }
+                }
+            }
+        }, filter);
+
 	SidebarObserver observer = new SidebarObserver(mHandler);
         observer.observe();
 
@@ -494,25 +513,6 @@ public abstract class BaseStatusBar extends SystemUI implements
                 mHalo = null;
             }
         }
-
-        mCurrentUserId = ActivityManager.getCurrentUser();
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_USER_SWITCHED);
-        mContext.registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                if (Intent.ACTION_USER_SWITCHED.equals(action)) {
-                    mCurrentUserId = intent.getIntExtra(Intent.EXTRA_USER_HANDLE, -1);
-                    if (true) Slog.v(TAG, "userId " + mCurrentUserId + " is in the house");
-                    userSwitched(mCurrentUserId);
-                    if (mPieController != null) {
-                        mPieController.userSwitched(mCurrentUserId);
-                    }
-                }
-            }
-        }, filter);
 
         mLocale = mContext.getResources().getConfiguration().locale;
     }

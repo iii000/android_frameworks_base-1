@@ -51,6 +51,7 @@ import java.io.FileDescriptor;
 import java.io.PrintWriter;
 
 import com.android.internal.statusbar.IStatusBarService;
+import com.android.internal.util.cm.BackgroundAlphaColorDrawable;
 import com.android.systemui.R;
 import com.android.systemui.TransparencyManager;
 import com.android.systemui.statusbar.BaseStatusBar;
@@ -264,6 +265,10 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         removeButtonListeners();
         updateButtonListeners();
         setDisabledFlags(mDisabledFlags, true /* force */);
+        Drawable bg = mContext.getResources().getDrawable(R.drawable.nav_bar_bg);
+        if(bg instanceof ColorDrawable) {
+            setBackground(new BackgroundAlphaColorDrawable(((ColorDrawable) bg).getColor()));
+        }
         if(mTransparencyManager != null) {
             mTransparencyManager.update();
         }

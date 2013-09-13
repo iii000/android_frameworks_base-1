@@ -89,7 +89,7 @@ public class HaloProperties extends FrameLayout implements BatteryStateChangeCal
     private int mHaloContentHeight = 0;
     private int mMsgCount, mValue;
     private int mBatteryLevel = 0;
-    private boolean mCharging = false;
+    private int mCharging = 0;
     private boolean airPlaneMode;
 
     private boolean mConnected = true;
@@ -492,16 +492,16 @@ public class HaloProperties extends FrameLayout implements BatteryStateChangeCal
     }
 
     @Override
-    public void onBatteryLevelChanged(int level, boolean pluggedIn) {
+    public void onBatteryLevelChanged(int level, int status) {
         mBatteryLevel = level;
-        mCharging = pluggedIn;
+        mCharging = status;
     }
 
     private BroadcastReceiver mBatteryReceiver = new BroadcastReceiver(){
         @Override
         public void onReceive(Context arg0, Intent intent) {
             mBatteryLevel = intent.getIntExtra("level", 0);
-            mCharging = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) != 0;
+            mCharging = (intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0) != 0) ? 1 : 0;
         }
     };
 
@@ -510,7 +510,8 @@ public class HaloProperties extends FrameLayout implements BatteryStateChangeCal
     }
 
     public boolean getBatteryStatus() {
-        return mCharging;
+        if (mCharging == 1) return true;
+        return false;
     }
 
     @Override

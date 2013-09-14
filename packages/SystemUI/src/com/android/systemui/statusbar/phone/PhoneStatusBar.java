@@ -596,13 +596,12 @@ public class PhoneStatusBar extends BaseStatusBar {
         }
 
         if (mRecreating) {
-            //if (mAppSidebar != null)
-            //    mWindowManager.removeView(mAppSidebar);
-	    removeSidebarView();
+            removeSidebarView();
+        } else {
+            addActiveDisplayView();
         }
-        //mAppSidebar = (AppSidebar)View.inflate(context, R.layout.app_sidebar, null);
-        //mWindowManager.addView(mAppSidebar, getAppSidebarLayoutParams(mSidebarPosition));
-	addSidebarView();
+
+        addSidebarView();
 
         // figure out which pixel-format to use for the status bar.
         mPixelFormat = PixelFormat.OPAQUE;
@@ -2503,7 +2502,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         setAreThereNotifications();
     }
 
-    private boolean areLightsOn() {
+    public boolean areLightsOn() {
         return 0 == (mSystemUiVisibility & View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
 
@@ -2521,6 +2520,10 @@ public class PhoneStatusBar extends BaseStatusBar {
             mWindowManagerService.statusBarVisibilityChanged(mSystemUiVisibility);
         } catch (RemoteException ex) {
         }
+    }
+
+    public void setNavigationBarLightsOn(boolean on, boolean force) {
+        mNavigationBarView.setLowProfile(!on, true, force);
     }
 
     @Override

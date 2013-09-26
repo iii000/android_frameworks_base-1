@@ -554,16 +554,15 @@ public class ActiveDisplayView extends FrameLayout {
      */
     private void launchNotificationPendingIntent() {
         if (mNotification != null) {
-            PendingIntent contentIntent = mNotification.getNotification().contentIntent;
-            if (contentIntent != null) {
-                try {
-                    contentIntent.send();
-                    mNM.cancelNotificationFromListener(mNotificationListener,
-                            mNotification.getPackageName(), mNotification.getTag(),
-                            mNotification.getId());
-                } catch (RemoteException re) {
-                } catch (CanceledException ce) {
-                }
+            try {
+                PendingIntent contentIntent = mNotification.getNotification().contentIntent;
+                contentIntent.send();
+                mNM.cancelNotificationFromListener(mNotificationListener,
+                        mNotification.getPackageName(), mNotification.getTag(),
+                        mNotification.getId());
+            } catch (NullPointerException e) {
+            } catch (RemoteException re) {
+            } catch (CanceledException ce) {
             }
             mNotification = null;
         }
@@ -950,7 +949,9 @@ public class ActiveDisplayView extends FrameLayout {
         try {
             Context pkgContext = mContext.createPackageContext(sbn.getPackageName(), Context.CONTEXT_RESTRICTED);
             mNotificationDrawable = pkgContext.getResources().getDrawable(sbn.getNotification().icon);
-            mCurrentNotificationIcon.setImageDrawable(mNotificationDrawable);
+            if (mNotificationDrawable != null) {
+                mCurrentNotificationIcon.setImageDrawable(mNotificationDrawable);
+            }
             setHandleText(sbn);
             mNotification = sbn;
             mGlowPadView.post(new Runnable() {

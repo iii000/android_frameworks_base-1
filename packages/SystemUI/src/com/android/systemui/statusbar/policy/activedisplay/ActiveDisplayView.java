@@ -129,6 +129,7 @@ public class ActiveDisplayView extends FrameLayout {
     private SensorManager mSensorManager;
     private Sensor mLightSensor;
     private Sensor mProximitySensor;
+    private boolean mProximityRegistered = false;
     private boolean mProximityIsFar = true;
     private boolean mIsInBrightLight = false;
     private LinearLayout mOverflowNotifications;
@@ -158,13 +159,22 @@ public class ActiveDisplayView extends FrameLayout {
     private class INotificationListenerWrapper extends INotificationListener.Stub {
         @Override
         public void onNotificationPosted(final StatusBarNotification sbn) {
-            if (shouldShowNotification() && isValidNotification(sbn)) {
-                // need to make sure either the screen is off or the user is currently
-                // viewing the notifications
-                if (ActiveDisplayView.this.getVisibility() == View.VISIBLE
-                        || !isScreenOn())
-                    showNotification(sbn, true);
-            }
+            if (!isScreenOn()) registerSensorListener();
+            mHandler.postDelayed(new Runnable() {
+                public void run() {
+                    if (shouldShowNotification() && isValidNotification(sbn)) {
+                        // need to make sure either the screen is off or the user is currently
+                        // viewing the notifications
+                        if (ActiveDisplayView.this.getVisibility() == View.VISIBLE
+                                || !isScreenOn())
+                            showNotification(sbn, true);
+                    } else if (mPocketModeEnabled && isValidNotification(sbn)) {
+                        // nothing to do here
+                    } else {
+                        unregisterSensorListener();
+                    }
+                }
+            }, 200);
         }
         @Override
         public void onNotificationRemoved(final StatusBarNotification sbn) {
@@ -654,12 +664,14 @@ public class ActiveDisplayView extends FrameLayout {
 
     private void onScreenTurnedOn() {
         cancelRedisplayTimer();
+        unregisterSensorListener();
     }
 
     private void onScreenTurnedOff() {
         hideNotificationView();
         cancelTimeoutTimer();
         if (mRedisplayTimeout > 0) updateRedisplayTimer();
+        if (mPocketModeEnabled && getNextAvailableNotification() != null) registerSensorListener();
     }
 
     private void turnScreenOff() {
@@ -752,13 +764,16 @@ public class ActiveDisplayView extends FrameLayout {
     }
 
     private void registerSensorListener() {
-        if (mProximitySensor != null)
+        if (mProximitySensor != null && !mProximityRegistered)
             mSensorManager.registerListener(mSensorListener, mProximitySensor, SensorManager.SENSOR_DELAY_UI);
+            mProximityRegistered = true;
     }
 
     private void unregisterSensorListener() {
-        if (mProximitySensor != null)
+        if (mProximitySensor != null && mProximityRegistered)
             mSensorManager.unregisterListener(mSensorListener, mProximitySensor);
+            mProximityRegistered = false;
+            mProximityIsFar = true;
     }
 
     private void registerCallbacks() {

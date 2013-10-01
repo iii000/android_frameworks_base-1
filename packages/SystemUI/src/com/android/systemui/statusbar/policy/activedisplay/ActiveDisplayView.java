@@ -180,7 +180,7 @@ public class ActiveDisplayView extends FrameLayout {
                         unregisterSensorListener();
                     }
                 }
-            }, 200);
+            }, 50);
         }
         @Override
         public void onNotificationRemoved(final StatusBarNotification sbn) {
@@ -696,6 +696,7 @@ public class ActiveDisplayView extends FrameLayout {
         }
         hideNotificationView();
         cancelTimeoutTimer();
+        mPocketTime = System.currentTimeMillis();
         if (mRedisplayTimeout > 0) updateRedisplayTimer();
         if (mPocketModeEnabled && getNextAvailableNotification() != null) registerSensorListener();
     }
@@ -799,14 +800,12 @@ public class ActiveDisplayView extends FrameLayout {
         if (mProximitySensor != null && mProximityRegistered)
             mSensorManager.unregisterListener(mSensorListener, mProximitySensor);
             mProximityRegistered = false;
-            mProximityIsFar = true;
     }
 
     private void registerCallbacks() {
         if (!mCallbacksRegistered) {
             registerBroadcastReceiver();
             registerNotificationListener();
-            registerSensorListener();
             mCallbacksRegistered = true;
         }
     }
@@ -829,8 +828,14 @@ public class ActiveDisplayView extends FrameLayout {
             for (int i = sbns.length - 1; i >= 0; i--) {
                 if (sbns[i] == null)
                     continue;
-                if (shouldShowNotification() && isValidNotification(sbns[i])) {
-                    return sbns[i];
+                if (mProximityRegistered) {
+                    if (shouldShowNotification() && isValidNotification(sbns[i])) {
+                        return sbns[i];
+                    }
+                } else {
+                    if (isValidNotification(sbns[i])) {
+                        return sbns[i];
+                    }
                 }
             }
         } catch (RemoteException e) {
@@ -1204,3 +1209,4 @@ public class ActiveDisplayView extends FrameLayout {
         }
     }
 }
+

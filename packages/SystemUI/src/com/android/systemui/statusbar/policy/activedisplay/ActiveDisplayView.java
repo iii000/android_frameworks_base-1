@@ -641,6 +641,10 @@ public class ActiveDisplayView extends FrameLayout {
         setVisibility(View.GONE);
         restoreBrightness();
         mBar.disable(0);
+        if (mWakedByPocketMode) {
+            mWakedByPocketMode = false;
+            unregisterSensorListener();
+        }
         cancelTimeoutTimer();
         if (mLightSensor != null)
             mSensorManager.unregisterListener(mSensorListener, mLightSensor);
@@ -696,7 +700,6 @@ public class ActiveDisplayView extends FrameLayout {
         }
         hideNotificationView();
         cancelTimeoutTimer();
-        mPocketTime = System.currentTimeMillis();
         if (mRedisplayTimeout > 0) updateRedisplayTimer();
         if (mPocketModeEnabled && getNextAvailableNotification() != null) registerSensorListener();
     }
@@ -794,6 +797,7 @@ public class ActiveDisplayView extends FrameLayout {
         if (mProximitySensor != null && !mProximityRegistered)
             mSensorManager.registerListener(mSensorListener, mProximitySensor, SensorManager.SENSOR_DELAY_UI);
             mProximityRegistered = true;
+            mPocketTime = System.currentTimeMillis();
     }
 
     private void unregisterSensorListener() {

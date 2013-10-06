@@ -1107,7 +1107,9 @@ public class ActiveDisplayView extends FrameLayout {
                     if (!isScreenOn() && mPocketModeEnabled && !isOnCall() && !inQuietHours()) {
                         if (System.currentTimeMillis() >= (mPocketTime + POCKET_THRESHOLD)) {
                             mWakedByPocketMode = true;
-                            mNotification = getNextAvailableNotification();
+                            if (mNotification == null) {
+                                mNotification = getNextAvailableNotification();
+                            }
                             if (mNotification != null) showNotification(mNotification, true);
                         }
                     }
@@ -1150,7 +1152,9 @@ public class ActiveDisplayView extends FrameLayout {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (ACTION_REDISPLAY_NOTIFICATION.equals(action)) {
-                mNotification = getNextAvailableNotification();
+                if (mNotification == null) {
+                    mNotification = getNextAvailableNotification();
+                }
                 if (mNotification != null) showNotification(mNotification, true);
             } else if (ACTION_DISPLAY_TIMEOUT.equals(action)) {
                 turnScreenOff();
@@ -1159,7 +1163,9 @@ public class ActiveDisplayView extends FrameLayout {
             } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
                 onScreenTurnedOn();
             } else if (ACTION_FORCE_DISPLAY.equals(action)) {
-                mNotification = getNextAvailableNotification();
+                if (mNotification == null) {
+                    mNotification = getNextAvailableNotification();
+                }
                 if (mNotification != null) showNotification(mNotification, true);
                 restoreBrightness();
             }

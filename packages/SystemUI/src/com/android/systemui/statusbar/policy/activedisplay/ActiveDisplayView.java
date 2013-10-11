@@ -814,7 +814,6 @@ public class ActiveDisplayView extends FrameLayout {
         if (mCallbacksRegistered) {
             unregisterBroadcastReceiver();
             unregisterNotificationListener();
-            unregisterSensorListener();
             mCallbacksRegistered = false;
         }
     }

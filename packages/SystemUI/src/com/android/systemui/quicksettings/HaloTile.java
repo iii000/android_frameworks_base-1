@@ -28,6 +28,9 @@ public class HaloTile extends QuickSettingsTile {
                 Settings.System.putIntForUser(mContext.getContentResolver(),
                         Settings.System.HALO_ENABLED, mEnabled ? 0 : 1,
                         UserHandle.USER_CURRENT);
+                if (isFlipTilesEnabled()) {
+                    flipTile(0);
+                }
             }
         };
 

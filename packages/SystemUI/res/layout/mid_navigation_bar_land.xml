@@ -45,7 +45,7 @@
         android:animateLayoutChanges="true">
         <com.android.systemui.statusbar.policy.KeyButtonView
             android:id="@+id/two"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_width="match_parent"
             android:layout_weight="0"
             systemui:keyRepeat="true"
@@ -57,7 +57,7 @@
             android:visibility="invisible" />
         <com.android.systemui.statusbar.policy.KeyButtonView
             android:id="@+id/three"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_width="match_parent"
             systemui:keyRepeat="true"
             android:layout_weight="0"
@@ -69,7 +69,7 @@
             android:visibility="invisible" />
         <com.android.systemui.statusbar.policy.KeyButtonView
             android:id="@+id/four"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_width="match_parent"
             android:layout_weight="0"
             systemui:keyRepeat="true"
@@ -81,7 +81,7 @@
             android:visibility="invisible" />
         <com.android.systemui.statusbar.policy.KeyButtonView
             android:id="@+id/five"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_width="match_parent"
             android:layout_weight="0"
             systemui:keyRepeat="true"

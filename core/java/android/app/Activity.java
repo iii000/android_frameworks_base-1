@@ -722,7 +722,6 @@ public class Activity extends ContextThemeWrapper
     private int mTitleColor = 0;
 
     private boolean mQuickPeekAction = false;
-    private boolean mNtQsShadeActive = false;
     private float mQuickPeekInitialY;
 
     final FragmentManagerImpl mFragments = new FragmentManagerImpl();
@@ -2449,11 +2448,9 @@ public class Activity extends ContextThemeWrapper
                 }
                 if (Math.abs(ev.getY() - mQuickPeekInitialY) > getStatusBarHeight()) {
                     getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     mHandler.postDelayed(new Runnable() {
                         public void run() {
                             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
                         }
                     }, (Settings.System.getInt(getContentResolver(), Settings.System.FULLSCREEN_STATUSBAR_TIMEOUT, 10000)));
                 }

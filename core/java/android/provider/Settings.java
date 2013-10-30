@@ -3020,6 +3020,36 @@ public final class Settings {
         public static final String ANIMATION_CONTROLS_NO_OVERRIDE = "animation_controls_no_override";
 
         /**
+         * @hide
+         */
+        public static final String WAKELOCK_BLOCKING_ENABLED = "wakelock_blocking_enabled";
+
+        /**
+         * @hide
+         */
+        public static final String WAKELOCK_BLOCKING_LIST = "wakelock_blocking_list";
+
+        /**
+         * @hide
+         */
+        public static final String START_SCREEN_STATE_SERVICE = "start_screen_state_service";
+
+        /**
+         * @hide
+         */
+        public static final String SCREEN_STATE_TWOG = "screen_state_twog";
+
+        /**
+         * @hide
+         */
+        public static final String SCREEN_STATE_GPS = "screen_state_gps";
+
+        /**
+         * @hide
+         */
+        public static final String SCREEN_STATE_MOBILE_DATA = "screen_state_mobile_data";
+
+        /**
          * Display style of the status bar battery information
          * 0: Display the stock battery information
          * 1: Display cm battery percentage implementation / dont show stock icon

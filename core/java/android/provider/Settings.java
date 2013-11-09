@@ -1952,7 +1952,7 @@ public final class Settings {
          * Whether to enable the electron beam animation when turning screen off
          *
          * @hide */
-        public static final String SCREEN_OFF_ANIMATION = "screen_off_animation";
+        public static final String SCREEN_OFF_ANIMATION_ENABLE = "screen_off_animation_enable";
 
         /**
          * Control whether the process CPU usage meter should be shown.
@@ -3479,6 +3479,12 @@ public final class Settings {
          * @hide
          */
         public static final String DOUBLE_TAP_SLEEP_GESTURE = "double_tap_sleep_gesture";
+
+        /**
+         * Defines the screen-off animation to display
+         * @hide
+         */
+        public static final String SCREEN_OFF_ANIMATION = "screen_off_animation";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
